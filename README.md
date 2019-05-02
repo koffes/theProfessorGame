@@ -1,0 +1,2 @@
+# professorspillet
+Solver for Professorspillet
