@@ -1,6 +1,7 @@
 
 CARDS_NUM = 16
-SIDE_LEN = 4
+SIDE_NUM = 4
+BPRT_NUM = 2
 
 BPRT_T = 0
 BPRT_L = 1
