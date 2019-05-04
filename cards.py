@@ -11,7 +11,7 @@ COL_R = 1
 COL_P = 2
 COL_B = 3
 
-CARDS = [
+DECK = [
     [[COL_P, BPRT_L], [COL_G, BPRT_T], [COL_B, BPRT_T], [COL_R, BPRT_L]],
     [[COL_G, BPRT_L], [COL_R, BPRT_T], [COL_P, BPRT_T], [COL_B, BPRT_L]],
     [[COL_B, BPRT_L], [COL_R, BPRT_T], [COL_P, BPRT_T], [COL_G, BPRT_L]],

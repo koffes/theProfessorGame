@@ -18,6 +18,19 @@ class Card:
             print('{}'.format(side.color))
 
 
+class Deck:
+    def __init__(self, init_deck):
+        if len(init_deck) != cards.CARDS_NUM:
+            raise ValueError('The number of card in deck is incorrect')
+
+        for card in range(len(init_deck)):
+            print(card)
+            for side in range(len(init_deck[0])):
+                print(init_deck[card][side][0])
+                self.s = Side(init_deck[card][side][0],
+                              init_deck[card][side][1])
+
+
 print('running prog')
 s0 = Side(1, 2)
 s1 = Side(3, 4)
@@ -32,3 +45,4 @@ sides.append(s3)
 
 
 kort = Card(sides)
+deck = Deck(cards.DECK)
