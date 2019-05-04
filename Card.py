@@ -3,14 +3,21 @@ import copy
 from tkinter import Tk
 from tkinter import Canvas
 
+TRNG_N = [50, 50, 0, 0, 100, 0, 50, 50]
+TRNG_E = [50, 50, 100, 0, 100, 100, 50, 50]
+TRNG_S = [50, 50, 100, 100, 0, 100, 50, 50]
+TRNG_W = [50, 50, 0, 100, 0, 0, 50, 50]
+
 
 class Draw:
     def deck(deck):
         root = Tk()
         canvas = Canvas(width=800, height=800, bg='white')
         canvas.pack()
-        points = [250, 110, 480, 200, 280, 280, 250, 110]
-        canvas.create_polygon(points, fill='red')
+        canvas.create_polygon(TRNG_N, fill='red')
+        canvas.create_polygon(TRNG_E, fill='blue')
+        canvas.create_polygon(TRNG_S, fill='green')
+        canvas.create_polygon(TRNG_W, fill='yellow')
         root.mainloop()
 
         i = 0
