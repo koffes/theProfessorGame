@@ -1,5 +1,23 @@
 import cards
 import copy
+from tkinter import Tk
+from tkinter import Canvas
+
+
+class Draw:
+    def deck(deck):
+        root = Tk()
+        canvas = Canvas(width=800, height=800, bg='white')
+        canvas.pack()
+        points = [250, 110, 480, 200, 280, 280, 250, 110]
+        canvas.create_polygon(points, fill='red')
+        root.mainloop()
+
+        i = 0
+        for card in deck.cards:
+            for side in card.sides:
+                print('side {}'.format(i))
+                i = i + 1
 
 
 class Side:
@@ -13,9 +31,12 @@ class Card:
         if len(sides) != cards.SIDE_NUM:
             raise ValueError('The number of card sides is incorrect')
 
-        self.card = copy.deepcopy(sides)
-        for side in self.card:
+        self.sides = copy.deepcopy(sides)
+        for side in self.sides:
             print('{}'.format(side.color))
+
+    def get_side(self, i):
+        return self.sides[i]
 
 
 class Deck:
@@ -23,26 +44,19 @@ class Deck:
         if len(init_deck) != cards.CARDS_NUM:
             raise ValueError('The number of card in deck is incorrect')
 
+        self.cards = []
         for card in range(len(init_deck)):
             print(card)
+            sides = []
             for side in range(len(init_deck[0])):
-                print(init_deck[card][side][0])
-                self.s = Side(init_deck[card][side][0],
-                              init_deck[card][side][1])
+                sides.append(Side(init_deck[card][side][0],
+                                  init_deck[card][side][1]))
+            self.cards.append(Card(sides))
+
+    def get_card(self, i):
+        return self.cards[i]
 
 
 print('running prog')
-s0 = Side(1, 2)
-s1 = Side(3, 4)
-s2 = Side(5, 6)
-s3 = Side(7, 8)
-
-sides = []
-sides.append(s0)
-sides.append(s1)
-sides.append(s2)
-sides.append(s3)
-
-
-kort = Card(sides)
 deck = Deck(cards.DECK)
+Draw.deck(deck)
