@@ -6,19 +6,14 @@ import math
 import cmath
 
 
-TRI_E = [50, 50, 100, 0, 100, 100, 50, 50]
-TRI_S = [50, 50, 100, 100, 0, 100, 50, 50]
-TRI_W = [50, 50, 0, 100, 0, 0, 50, 50]
-
-
 class Draw:
     def __init__(self):
         self.CIRCLE_RADIUS = 10
         self.COORD_CENTER = 50
-        self.N = 0
-        self.E = 90
-        self.S = 180
-        self.W = 270
+        self.CARDINAL_N = 0
+        self.CARDINAL_E = 90
+        self.CARDINAL_S = 180
+        self.CARDINAL_W = 270
 
     def _circle(self, x, y, r):
         x0 = x - r
@@ -37,8 +32,6 @@ class Draw:
         angle = cmath.exp(orient*1j*math.pi/180)
         offs = complex(self.COORD_CENTER + offs_x, self.COORD_CENTER + offs_y)
         for x, y in TRI_BASE:
-            print(x)
-            print(y)
             comp = angle * (complex(x, y) - offs) + offs
             rotated_coord.append(comp.real)
             rotated_coord.append(comp.imag)
@@ -54,14 +47,17 @@ class Draw:
         root = Tk()
         self.canvas = Canvas(width=400, height=400, bg='white')
         self.canvas.pack()
-        self._triangle(self.S, 0, 0, 'red', cards.Bprt.T)
+        self._triangle(self.CARDINAL_S, 0, 0, 'red', cards.Bprt.T)
+        self._triangle(self.CARDINAL_N, 0, 0, 'red', cards.Bprt.T)
+        self._triangle(self.CARDINAL_E, 0, 0, 'red', cards.Bprt.T)
         root.mainloop()
 
         i = 0
-        for card in deck.cards:
-            for side in card.sides:
-                # print('side {}'.format(i))
-                i = i + 1
+        for i, card in enumerate(deck.cards, start=0):
+            print(divmod(i, 4))
+            i = i + 1
+            # for side in card.sides:
+            # print('side {}'.  d(i))
 
 
 class Side:
@@ -76,8 +72,8 @@ class Card:
             raise ValueError('The number of card sides is incorrect')
 
         self.sides = copy.deepcopy(sides)
-        for side in self.sides:
-            print('{}'.format(side.color))
+        # for side in self.sides:
+        # print('{}'.format(side.color))
 
     def get_side(self, i):
         return self.sides[i]

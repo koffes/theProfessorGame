@@ -11,10 +11,10 @@ class Bprt(Enum):
 
 
 class Clr(Enum):
-    G = 0
-    R = 1
-    P = 2
-    B = 3
+    G = 'green'
+    R = 'red'
+    P = 'purple'
+    B = 'blue'
 
 
 DECK = [
