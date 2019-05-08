@@ -47,8 +47,14 @@ class Draw:
 
         # If we have a torso, draw a circle to indicate on top of triangle
         if bprt == cards.Bprt.T:
-            comp = angle * (complex(offs_x + 50, offs_y + 20) - offs) + offs
+            comp = angle * (complex(offs_x + 50, offs_y + 15) - offs) + offs
             self._circle(comp.real, comp.imag, self.CIRCLE_RADIUS)
+
+        if bprt == cards.Bprt.L:
+            comp_s = angle * (complex(offs_x + 50, offs_y + 5) - offs) + offs
+            comp_e = angle * (complex(offs_x + 50, offs_y + 25) - offs) + offs
+            self.canvas.create_line(comp_s.real, comp_s.imag,
+                                    comp_e.real, comp_e.imag, width=4)
 
         self.canvas.create_rectangle(offs_x, offs_y,
                                      offs_x + 100, offs_y + 100, width=4)
