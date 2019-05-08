@@ -36,28 +36,31 @@ class Draw:
             rotated_coord.append(comp.real)
             rotated_coord.append(comp.imag)
 
-        self.canvas.create_polygon(rotated_coord, fill=color)
+        self.canvas.create_polygon(rotated_coord, fill=color.value)
 
         # If we have a torso, draw a circle to indicate on top of triangle
         if bprt == cards.Bprt.T:
-            comp = angle * (complex(50, 20) - offs) + offs
+            comp = angle * (complex(offs_x + 50, offs_y + 20) - offs) + offs
             self._circle(comp.real, comp.imag, self.CIRCLE_RADIUS)
+            print('circle:')
+            print(comp.real, comp.imag)
+
+        self.canvas.create_rectangle(offs_x, offs_y,
+                                     offs_x + 100, offs_y + 100, width=2)
 
     def deck(self, deck):
         root = Tk()
         self.canvas = Canvas(width=400, height=400, bg='white')
         self.canvas.pack()
-        self._triangle(self.CARDINAL_S, 0, 0, 'red', cards.Bprt.T)
-        self._triangle(self.CARDINAL_N, 0, 0, 'red', cards.Bprt.T)
-        self._triangle(self.CARDINAL_E, 0, 0, 'red', cards.Bprt.T)
-        root.mainloop()
 
-        i = 0
         for i, card in enumerate(deck.cards, start=0):
-            print(divmod(i, 4))
-            i = i + 1
-            # for side in card.sides:
-            # print('side {}'.  d(i))
+            x, y = divmod(i, 4)
+            for j, side in enumerate(card.sides, start=0):
+                self._triangle(j * 90, x * 100, y * 100,
+                               side.color, side.bdyprt)
+                # print('side {}'.  d(i))
+
+        root.mainloop()
 
 
 class Side:

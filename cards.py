@@ -34,3 +34,5 @@ DECK = [
     [[Clr.R, Bprt.L], [Clr.P, Bprt.T], [Clr.B, Bprt.T], [Clr.G, Bprt.L]],
     [[Clr.G, Bprt.L], [Clr.R, Bprt.T], [Clr.P, Bprt.T], [Clr.G, Bprt.L]],
     [[Clr.P, Bprt.L], [Clr.G, Bprt.T], [Clr.R, Bprt.T], [Clr.R, Bprt.L]]]
+
+print(DECK)
