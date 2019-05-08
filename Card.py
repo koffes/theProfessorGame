@@ -36,7 +36,8 @@ class Draw:
             rotated_coord.append(comp.real)
             rotated_coord.append(comp.imag)
 
-        self.canvas.create_polygon(rotated_coord, fill=color.value)
+        self.canvas.create_polygon(rotated_coord, fill=color.value,
+                                   outline='black')
 
         # If we have a torso, draw a circle to indicate on top of triangle
         if bprt == cards.Bprt.T:
@@ -46,7 +47,7 @@ class Draw:
             print(comp.real, comp.imag)
 
         self.canvas.create_rectangle(offs_x, offs_y,
-                                     offs_x + 100, offs_y + 100, width=2)
+                                     offs_x + 100, offs_y + 100, width=4)
 
     def deck(self, deck):
         root = Tk()
