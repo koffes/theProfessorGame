@@ -1,3 +1,4 @@
+"""The professor game solver."""
 import cards
 import copy
 from tkinter import Tk
@@ -7,7 +8,10 @@ import cmath
 
 
 class Draw:
+    """Contains modules for game visualization."""
+
     def __init__(self):
+        """Initialize class for drawing the game board."""
         self.CIRCLE_RADIUS = 10
         self.COORD_CENTER = 50
         self.CARDINAL_N = 0
@@ -16,6 +20,7 @@ class Draw:
         self.CARDINAL_W = 270
 
     def _circle(self, x, y, r):
+        """Draw a circle located at x, y, with radius r."""
         x0 = x - r
         y0 = y - r
         x1 = x + r
@@ -23,6 +28,7 @@ class Draw:
         self.canvas.create_oval(x0, y0, x1, y1, width=4)
 
     def _triangle(self, orient, offs_x, offs_y, color, bprt):
+        """Draw a triangle (one side of a card)."""
         TRI_BASE = [(50 + offs_x, 50 + offs_y),
                     (0 + offs_x, 0 + offs_y),
                     (100 + offs_x, 0 + offs_y),
@@ -50,6 +56,7 @@ class Draw:
                                      offs_x + 100, offs_y + 100, width=4)
 
     def deck(self, deck):
+        """Draw the entire card deck."""
         root = Tk()
         self.canvas = Canvas(width=400, height=400, bg='white')
         self.canvas.pack()
@@ -65,13 +72,19 @@ class Draw:
 
 
 class Side:
+    """Class describing one side of a card."""
+
     def __init__(self, color, bdyprt):
+        """Initialize a side of a card. A card has four sides."""
         self.color = color
         self.bdyprt = bdyprt
 
 
 class Card:
+    """Class description of a single card."""
+
     def __init__(self, sides):
+        """Create a card witg four sides."""
         if len(sides) != cards.SIDE_NUM:
             raise ValueError('The number of card sides is incorrect')
 
@@ -80,11 +93,15 @@ class Card:
         # print('{}'.format(side.color))
 
     def get_side(self, i):
+        """Get a card side. Labelled clockwise from North."""
         return self.sides[i]
 
 
 class Deck:
+    """Contains the entire 16 card player deck."""
+
     def __init__(self, init_deck):
+        """Create a deck of cards."""
         if len(init_deck) != cards.CARDS_NUM:
             raise ValueError('The number of card in deck is incorrect')
 
@@ -98,6 +115,7 @@ class Deck:
             self.cards.append(Card(sides))
 
     def get_card(self, i):
+        """Get a card."""
         return self.cards[i]
 
 

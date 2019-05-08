@@ -17,3 +17,8 @@
     -   id: name-tests-test
     -   id: requirements-txt-fixer
     -   id: trailing-whitespace
+
+-   repo: git://github.com/chewse/pre-commit-mirrors-pydocstyle
+    rev: v2.1.1
+    hooks:
+    -   id: pydocstyle

@@ -1,3 +1,4 @@
+"""Description of the cards and the given deck."""
 from enum import Enum
 
 CARDS_NUM = 16
@@ -6,11 +7,15 @@ BPRT_NUM = 2
 
 
 class Bprt(Enum):
+    """The two possible side bodyparts. Torso or legs."""
+
     T = 0
     L = 1
 
 
 class Clr(Enum):
+    """All possible side colors."""
+
     G = 'green'
     R = 'red'
     P = 'purple'
