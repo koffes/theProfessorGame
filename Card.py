@@ -28,7 +28,7 @@ class Draw:
         self.canvas.create_oval(x0, y0, x1, y1, width=4)
 
     def _triangle(self, orient, offs_x, offs_y, color, bprt):
-        """Draw a triangle (one side of a card)."""
+        """Draw a triangle (one edge of a card)."""
         TRI_BASE = [(50 + offs_x, 50 + offs_y),
                     (0 + offs_x, 0 + offs_y),
                     (100 + offs_x, 0 + offs_y),
@@ -49,8 +49,6 @@ class Draw:
         if bprt == cards.Bprt.T:
             comp = angle * (complex(offs_x + 50, offs_y + 20) - offs) + offs
             self._circle(comp.real, comp.imag, self.CIRCLE_RADIUS)
-            print('circle:')
-            print(comp.real, comp.imag)
 
         self.canvas.create_rectangle(offs_x, offs_y,
                                      offs_x + 100, offs_y + 100, width=4)
@@ -62,20 +60,19 @@ class Draw:
         self.canvas.pack()
 
         for i, card in enumerate(deck.cards, start=0):
-            x, y = divmod(i, 4)
-            for j, side in enumerate(card.sides, start=0):
+            x, y = divmod(i, cards.EDGE_NUM)
+            for j, edge in enumerate(card.edges, start=0):
                 self._triangle(j * 90, x * 100, y * 100,
-                               side.color, side.bdyprt)
-                # print('side {}'.  d(i))
+                               edge.color, edge.bdyprt)
 
         root.mainloop()
 
 
 class Side:
-    """Class describing one side of a card."""
+    """Class describing one edge of a card."""
 
     def __init__(self, color, bdyprt):
-        """Initialize a side of a card. A card has four sides."""
+        """Initialize a edge of a card. A card has four edges."""
         self.color = color
         self.bdyprt = bdyprt
 
@@ -83,18 +80,18 @@ class Side:
 class Card:
     """Class description of a single card."""
 
-    def __init__(self, sides):
-        """Create a card witg four sides."""
-        if len(sides) != cards.SIDE_NUM:
-            raise ValueError('The number of card sides is incorrect')
+    def __init__(self, edges):
+        """Create a card with four edges."""
+        if len(edges) != cards.EDGE_NUM:
+            raise ValueError('The number of card edges is incorrect')
 
-        self.sides = copy.deepcopy(sides)
-        # for side in self.sides:
-        # print('{}'.format(side.color))
+        self.edges = copy.deepcopy(edges)
+        # for edge in self.edges:
+        # print('{}'.format(edge.color))
 
-    def get_side(self, i):
-        """Get a card side. Labelled clockwise from North."""
-        return self.sides[i]
+    def get_edge(self, i):
+        """Get a card edge. Labelled clockwise from North."""
+        return self.edges[i]
 
 
 class Deck:
@@ -107,19 +104,18 @@ class Deck:
 
         self.cards = []
         for card in range(len(init_deck)):
-            print(card)
-            sides = []
-            for side in range(len(init_deck[0])):
-                sides.append(Side(init_deck[card][side][0],
-                                  init_deck[card][side][1]))
-            self.cards.append(Card(sides))
+            edges = []
+            for edge in range(len(init_deck[0])):
+                edges.append(Side(init_deck[card][edge][0],
+                                  init_deck[card][edge][1]))
+            self.cards.append(Card(edges))
 
     def get_card(self, i):
         """Get a card."""
         return self.cards[i]
 
 
-print('running prog')
+print('Running the professor game solver.')
 deck = Deck(cards.DECK)
 draw = Draw()
 draw.deck(deck)
