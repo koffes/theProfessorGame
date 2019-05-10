@@ -1,5 +1,5 @@
 """The professor game solver."""
-import cards
+import tiles
 import copy
 from tkinter import Tk
 from tkinter import Canvas
@@ -7,11 +7,11 @@ import math
 import cmath
 
 
-class Draw:
+class Display:
     """Contains modules for game visualization."""
 
     def __init__(self):
-        """Initialize class for drawing the game board."""
+        """Initialize class for displaying the game board."""
         self.CIRCLE_RADIUS = 10
         self.SIZE_PX = 100
         self.CTR_PX = self.SIZE_PX / 2
@@ -25,7 +25,7 @@ class Draw:
         self.canvas.create_oval(x0, y0, x1, y1, width=4)
 
     def _triangle(self, orient, offs_x, offs_y, color, bprt):
-        """Draw a triangle (one edge of a card)."""
+        """Draw a triangle (one edge of a tile)."""
         TRI_BASE = [(self.CTR_PX + offs_x, self.CTR_PX + offs_y),
                     (0 + offs_x, 0 + offs_y),
                     (self.SIZE_PX + offs_x, 0 + offs_y),
@@ -43,13 +43,13 @@ class Draw:
                                    outline='black')
 
         # If torso, draw a circle to indicate on top of triangle
-        if bprt == cards.Bprt.T:
+        if bprt == tiles.Bprt.T:
             comp = angle * (complex(offs_x + self.CTR_PX, offs_y + 15) -
                             offs) + offs
             self._circle(comp.real, comp.imag, self.CIRCLE_RADIUS)
 
         # If legs, draw a line
-        if bprt == cards.Bprt.L:
+        if bprt == tiles.Bprt.L:
             comp_s = angle * (complex(offs_x + self.CTR_PX, offs_y + 5) -
                               offs) + offs
             comp_e = angle * (complex(offs_x + self.CTR_PX, offs_y + 25) -
@@ -62,15 +62,15 @@ class Draw:
                                      offs_y + self.SIZE_PX, width=4)
 
     def deck(self, deck):
-        """Draw the entire card deck."""
+        """Draw the entire tile deck."""
         root = Tk()
-        self.canvas = Canvas(width=self.SIZE_PX * cards.EDGE_NUM,
-                             height=self.SIZE_PX * cards.EDGE_NUM, bg='white')
+        self.canvas = Canvas(width=self.SIZE_PX * tiles.EDGE_NUM,
+                             height=self.SIZE_PX * tiles.EDGE_NUM, bg='white')
         self.canvas.pack()
 
-        for i, card in enumerate(deck.cards, start=0):
-            x, y = divmod(i, cards.EDGE_NUM)
-            for j, edge in enumerate(card.edges, start=0):
+        for i, tile in enumerate(deck.tiles, start=0):
+            x, y = divmod(i, tiles.EDGE_NUM)
+            for j, edge in enumerate(tile.edges, start=0):
                 self._triangle(j * 90, x * 100, y * 100,
                                edge.color, edge.bdyprt)
 
@@ -78,53 +78,47 @@ class Draw:
 
 
 class Side:
-    """Class describing one edge of a card."""
+    """Class describing one edge of a tile."""
 
     def __init__(self, color, bdyprt):
-        """Initialize a edge of a card. A card has four edges."""
+        """Initialize a edge of a tile. A tile has four edges."""
         self.color = color
         self.bdyprt = bdyprt
 
 
-class Card:
-    """Class description of a single card."""
+class Tile:
+    """Class description of a single tile."""
 
     def __init__(self, edges):
-        """Create a card with four edges."""
-        if len(edges) != cards.EDGE_NUM:
-            raise ValueError('The number of card edges is incorrect')
+        """Create a tile with four edges."""
+        if len(edges) != tiles.EDGE_NUM:
+            raise ValueError('The number of tile edges is incorrect')
 
         self.edges = copy.deepcopy(edges)
         # for edge in self.edges:
         # print('{}'.format(edge.color))
 
     def get_edge(self, i):
-        """Get a card edge. Labelled clockwise from North."""
+        """Get a tile edge. Labelled clockwise from North."""
         return self.edges[i]
 
 
 class Deck:
-    """Contains the entire 16 card player deck."""
+    """Contains the entire 16 tile player deck."""
 
     def __init__(self, init_deck):
-        """Create a deck of cards."""
-        if len(init_deck) != cards.CARDS_NUM:
-            raise ValueError('The number of card in deck is incorrect')
+        """Create a deck of tiles."""
+        if len(init_deck) != tiles.CARDS_NUM:
+            raise ValueError('The number of tile in deck is incorrect')
 
-        self.cards = []
-        for card in range(len(init_deck)):
+        self.tiles = []
+        for tile in range(len(init_deck)):
             edges = []
             for edge in range(len(init_deck[0])):
-                edges.append(Side(init_deck[card][edge][0],
-                                  init_deck[card][edge][1]))
-            self.cards.append(Card(edges))
+                edges.append(Side(init_deck[tile][edge][0],
+                                  init_deck[tile][edge][1]))
+            self.tiles.append(Tile(edges))
 
-    def get_card(self, i):
-        """Get a card."""
-        return self.cards[i]
-
-
-print('Running the professor game solver.')
-deck = Deck(cards.DECK)
-draw = Draw()
-draw.deck(deck)
+    def get_tile(self, i):
+        """Get a tile."""
+        return self.tiles[i]
