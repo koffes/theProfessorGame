@@ -13,11 +13,8 @@ class Draw:
     def __init__(self):
         """Initialize class for drawing the game board."""
         self.CIRCLE_RADIUS = 10
-        self.COORD_CENTER = 50
-        self.CARDINAL_N = 0
-        self.CARDINAL_E = 90
-        self.CARDINAL_S = 180
-        self.CARDINAL_W = 270
+        self.SIZE_PX = 100
+        self.CTR_PX = self.SIZE_PX / 2
 
     def _circle(self, x, y, r):
         """Draw a circle located at x, y, with radius r."""
@@ -29,14 +26,14 @@ class Draw:
 
     def _triangle(self, orient, offs_x, offs_y, color, bprt):
         """Draw a triangle (one edge of a card)."""
-        TRI_BASE = [(50 + offs_x, 50 + offs_y),
+        TRI_BASE = [(self.CTR_PX + offs_x, self.CTR_PX + offs_y),
                     (0 + offs_x, 0 + offs_y),
-                    (100 + offs_x, 0 + offs_y),
-                    (50 + offs_x, 50 + offs_y)]
+                    (self.SIZE_PX + offs_x, 0 + offs_y),
+                    (self.CTR_PX + offs_x, self.CTR_PX + offs_y)]
 
         rotated_coord = []
         angle = cmath.exp(orient*1j*math.pi/180)
-        offs = complex(self.COORD_CENTER + offs_x, self.COORD_CENTER + offs_y)
+        offs = complex(self.CTR_PX + offs_x, self.CTR_PX + offs_y)
         for x, y in TRI_BASE:
             comp = angle * (complex(x, y) - offs) + offs
             rotated_coord.append(comp.real)
@@ -45,24 +42,30 @@ class Draw:
         self.canvas.create_polygon(rotated_coord, fill=color.value,
                                    outline='black')
 
-        # If we have a torso, draw a circle to indicate on top of triangle
+        # If torso, draw a circle to indicate on top of triangle
         if bprt == cards.Bprt.T:
-            comp = angle * (complex(offs_x + 50, offs_y + 15) - offs) + offs
+            comp = angle * (complex(offs_x + self.CTR_PX, offs_y + 15) -
+                            offs) + offs
             self._circle(comp.real, comp.imag, self.CIRCLE_RADIUS)
 
+        # If legs, draw a line
         if bprt == cards.Bprt.L:
-            comp_s = angle * (complex(offs_x + 50, offs_y + 5) - offs) + offs
-            comp_e = angle * (complex(offs_x + 50, offs_y + 25) - offs) + offs
+            comp_s = angle * (complex(offs_x + self.CTR_PX, offs_y + 5) -
+                              offs) + offs
+            comp_e = angle * (complex(offs_x + self.CTR_PX, offs_y + 25) -
+                              offs) + offs
             self.canvas.create_line(comp_s.real, comp_s.imag,
                                     comp_e.real, comp_e.imag, width=4)
 
         self.canvas.create_rectangle(offs_x, offs_y,
-                                     offs_x + 100, offs_y + 100, width=4)
+                                     offs_x + self.SIZE_PX,
+                                     offs_y + self.SIZE_PX, width=4)
 
     def deck(self, deck):
         """Draw the entire card deck."""
         root = Tk()
-        self.canvas = Canvas(width=400, height=400, bg='white')
+        self.canvas = Canvas(width=self.SIZE_PX * cards.EDGE_NUM,
+                             height=self.SIZE_PX * cards.EDGE_NUM, bg='white')
         self.canvas.pack()
 
         for i, card in enumerate(deck.cards, start=0):
