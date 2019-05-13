@@ -12,10 +12,26 @@ class Board:
         self.board = [[None for i in range(4)] for j in range(4)]
         print(self.board)
 
+    def _check_next_to_existing_tile(self, row, col):
+        if row == 0 and col == 0:
+            return
+        elif row == 0:
+            if self.board[0][col-1] is not None:
+                return
+        elif col == 0:
+            if self.board[row-1][3] is not None:
+                return
+        else:
+            if self.board[row][col-1] is not None:
+                return
+        raise ValueError('A new tile must be placed next to exisiting tile.')
+
     def tile_add(self, row, col, tile):
         """Add tile to board."""
+        self._check_next_to_existing_tile(row, col)
         if self.board[row][col] is not None:
             raise ValueError('There is already a tile in this spot.')
+
         if tile.get_in_use():
             raise ValueError('Current tile is already on the board.')
         self.board[row][col] = tile
@@ -65,6 +81,7 @@ class Solver:
         self.disp = Display()
         self.board = Board()
         self.board.tile_add(0, 0, self.deck.get_tile(0))
+        self.board.tile_add(0, 1, self.deck.get_tile(1))
         self.disp.board(self.board.board)
         self.board.tile_remove(0, 0)
 

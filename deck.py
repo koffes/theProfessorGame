@@ -72,9 +72,9 @@ class Display:
     def deck(self, deck):
         """Draw the entire tile deck."""
         for i, tile in enumerate(deck.tiles, start=0):
-            x, y = divmod(i, tiles.EDGE_NUM)
+            row, col = divmod(i, tiles.EDGE_NUM)
             for edge_no, edge in enumerate(tile.get_edges(), start=0):
-                self._triangle(edge_no * 90, x * 100, y * 100,
+                self._triangle(edge_no * 90, col * 100, row * 100,
                                edge.color, edge.bdyprt)
 
         self.tk_root.mainloop()
@@ -85,12 +85,12 @@ class Display:
             for col in range(tiles.EDGE_NUM):
                 if board[row][col] is None:
                     for edge_no in range(tiles.EDGE_NUM):
-                        self._triangle(edge_no * 90, row * 100, col * 100,
+                        self._triangle(edge_no * 90, col * 100, row * 100,
                                        None, None)
                 else:
                     for edge_no, edge in enumerate(board[row][col].get_edges(),
                                                    start=0):
-                        self._triangle(edge_no * 90, row * 100, col * 100,
+                        self._triangle(edge_no * 90, col * 100, row * 100,
                                        edge.color, edge.bdyprt)
         self.tk_root.mainloop()
 
