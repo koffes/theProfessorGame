@@ -15,6 +15,10 @@ class Display:
         self.CIRCLE_RADIUS = 10
         self.SIZE_PX = 100
         self.CTR_PX = self.SIZE_PX / 2
+        self.tk_root = Tk()
+        self.canvas = Canvas(width=self.SIZE_PX * tiles.EDGE_NUM,
+                             height=self.SIZE_PX * tiles.EDGE_NUM, bg='white')
+        self.canvas.pack()
 
     def _circle(self, x, y, r):
         """Draw a circle located at x, y, with radius r."""
@@ -39,8 +43,12 @@ class Display:
             rotated_coord.append(comp.real)
             rotated_coord.append(comp.imag)
 
-        self.canvas.create_polygon(rotated_coord, fill=color.value,
-                                   outline='black')
+        if color is None:
+            self.canvas.create_polygon(rotated_coord, fill='gray',
+                                       outline='black')
+        else:
+            self.canvas.create_polygon(rotated_coord, fill=color.value,
+                                       outline='black')
 
         # If torso, draw a circle to indicate on top of triangle
         if bprt == tiles.Bprt.T:
@@ -63,18 +71,28 @@ class Display:
 
     def deck(self, deck):
         """Draw the entire tile deck."""
-        root = Tk()
-        self.canvas = Canvas(width=self.SIZE_PX * tiles.EDGE_NUM,
-                             height=self.SIZE_PX * tiles.EDGE_NUM, bg='white')
-        self.canvas.pack()
-
         for i, tile in enumerate(deck.tiles, start=0):
             x, y = divmod(i, tiles.EDGE_NUM)
-            for j, edge in enumerate(tile.get_edges(), start=0):
-                self._triangle(j * 90, x * 100, y * 100,
+            for edge_no, edge in enumerate(tile.get_edges(), start=0):
+                self._triangle(edge_no * 90, x * 100, y * 100,
                                edge.color, edge.bdyprt)
 
-        root.mainloop()
+        self.tk_root.mainloop()
+
+    def board(self, board):
+        """Draw the board."""
+        for row in range(tiles.EDGE_NUM):
+            for col in range(tiles.EDGE_NUM):
+                if board[row][col] is None:
+                    for edge_no in range(tiles.EDGE_NUM):
+                        self._triangle(edge_no * 90, row * 100, col * 100,
+                                       None, None)
+                else:
+                    for edge_no, edge in enumerate(board[row][col].get_edges(),
+                                                   start=0):
+                        self._triangle(edge_no * 90, row * 100, col * 100,
+                                       edge.color, edge.bdyprt)
+        self.tk_root.mainloop()
 
 
 class Edge:

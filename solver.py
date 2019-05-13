@@ -16,14 +16,19 @@ class Board:
         """Add tile to board."""
         if self.board[row][col] is not None:
             raise ValueError('There is already a tile in this spot.')
+        if tile.get_in_use():
+            raise ValueError('Current tile is already on the board.')
         self.board[row][col] = tile
+        self.board[row][col].set_in_use()
 
     def tile_remove(self, row, col):
         """Remove tile from board."""
+        if self.board[row][col] is None:
+            raise ValueError('Space is already cleared')
+        self.board[row][col].clr_in_use()
         self.board[row][col] = None
 
     def _edge_match(self, edge_a, edge_b):
-        """Check color and bodypart match."""
         if edge_a.color.value is not edge_b.color.value:
             return False
         if edge_a.bdyprt is edge_b.bdyprt:
@@ -58,10 +63,10 @@ class Solver:
         """Create the deck and start the solver."""
         self.deck = Deck(tiles.DECK)
         self.disp = Display()
-        self.disp.deck(self.deck)
-        self.deck.get_tile(0).rotate_cw()
-        self.disp.deck(self.deck)
         self.board = Board()
+        self.board.tile_add(0, 0, self.deck.get_tile(0))
+        self.disp.board(self.board.board)
+        self.board.tile_remove(0, 0)
 
 
 print('Running the professor game solver.')
