@@ -3,6 +3,10 @@ from enum import Enum
 
 CARDS_NUM = 16
 EDGE_NUM = 4
+DIR_N = 0
+DIR_E = 1
+DIR_S = 2
+DIR_W = 3
 
 
 class Bprt(Enum):

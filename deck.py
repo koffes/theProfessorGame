@@ -70,14 +70,14 @@ class Display:
 
         for i, tile in enumerate(deck.tiles, start=0):
             x, y = divmod(i, tiles.EDGE_NUM)
-            for j, edge in enumerate(tile.edges, start=0):
+            for j, edge in enumerate(tile.get_edges(), start=0):
                 self._triangle(j * 90, x * 100, y * 100,
                                edge.color, edge.bdyprt)
 
         root.mainloop()
 
 
-class Side:
+class Edge:
     """Class describing one edge of a tile."""
 
     def __init__(self, color, bdyprt):
@@ -94,13 +94,36 @@ class Tile:
         if len(edges) != tiles.EDGE_NUM:
             raise ValueError('The number of tile edges is incorrect')
 
-        self.edges = copy.deepcopy(edges)
-        # for edge in self.edges:
-        # print('{}'.format(edge.color))
+        self._edges = copy.deepcopy(edges)
+        self._original_edges = self._edges
+        self._in_use = False
 
     def get_edge(self, i):
         """Get a tile edge. Labelled clockwise from North."""
-        return self.edges[i]
+        return self._edges[i]
+
+    def get_edges(self):
+        """Return all edges."""
+        return self._edges
+
+    def rotate_cw(self):
+        """Rotate card clockwise."""
+        if not self.in_use:
+            raise RuntimeError('Tile not in use shall not be rotated')
+        self._edges = [self._edges[-1]] + self._edges[0:-1]
+
+    def set_in_use(self):
+        """Tile is used in board."""
+        self._in_use = True
+
+    def clr_in_use(self):
+        """Return to original rotation."""
+        self._edges = self._original_edges
+        self._in_use = False
+
+    def get_in_use(self):
+        """Check if given tile is placed."""
+        return self._in_use
 
 
 class Deck:
@@ -115,7 +138,7 @@ class Deck:
         for tile in range(len(init_deck)):
             edges = []
             for edge in range(len(init_deck[0])):
-                edges.append(Side(init_deck[tile][edge][0],
+                edges.append(Edge(init_deck[tile][edge][0],
                                   init_deck[tile][edge][1]))
             self.tiles.append(Tile(edges))
 
