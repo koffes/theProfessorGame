@@ -1,7 +1,7 @@
 """Professor game solver."""
 from deck import Deck
-from deck import Display
 import tiles
+from display import Display
 
 
 class Board:
