@@ -12,15 +12,30 @@ class TestBoard(unittest.TestCase):
     def setUp(self):
         """Create a Tile with test data."""
         self.board = Board()
-        self.edges = [Edge(tiles.Clr.R, tiles.Bprt.T),
-                      Edge(tiles.Clr.G, tiles.Bprt.T),
-                      Edge(tiles.Clr.B, tiles.Bprt.L),
-                      Edge(tiles.Clr.P, tiles.Bprt.L)]
-        self.tile_a = Tile(self.edges)
-        self.tile_b = Tile(self.edges)
-        self.tile_c = Tile(self.edges)
-        self.tile_d = Tile(self.edges)
-        self.tile_e = Tile(self.edges)
+        self.edges_1 = [Edge(tiles.Clr.R, tiles.Bprt.T),
+                        Edge(tiles.Clr.G, tiles.Bprt.T),
+                        Edge(tiles.Clr.B, tiles.Bprt.L),
+                        Edge(tiles.Clr.P, tiles.Bprt.L)]
+        self.edges_2 = [Edge(tiles.Clr.R, tiles.Bprt.T),
+                        Edge(tiles.Clr.G, tiles.Bprt.T),
+                        Edge(tiles.Clr.B, tiles.Bprt.L),
+                        Edge(tiles.Clr.G, tiles.Bprt.L)]
+        self.edges_3 = [Edge(tiles.Clr.B, tiles.Bprt.T),
+                        Edge(tiles.Clr.G, tiles.Bprt.T),
+                        Edge(tiles.Clr.B, tiles.Bprt.L),
+                        Edge(tiles.Clr.G, tiles.Bprt.L)]
+        self.edges_4 = [Edge(tiles.Clr.B, tiles.Bprt.T),
+                        Edge(tiles.Clr.G, tiles.Bprt.T),
+                        Edge(tiles.Clr.B, tiles.Bprt.L),
+                        Edge(tiles.Clr.G, tiles.Bprt.L)]
+
+        self.tile_a = Tile(self.edges_1)
+        self.tile_b = Tile(self.edges_2)
+        self.tile_c = Tile(self.edges_2)
+        self.tile_d = Tile(self.edges_2)
+        self.tile_e = Tile(self.edges_3)
+        self.tile_f = Tile(self.edges_4)
+        self.tile_g = Tile(self.edges_1)
 
     def test_tile_add(self):
         """Check that multiple tiles can be added to board."""
@@ -62,6 +77,32 @@ class TestBoard(unittest.TestCase):
         self.board.tile_pop()
         self.board.tile_pop()
         self.assertRaises(IndexError, self.board.tile_pop)
+
+    def test_valid(self):
+        """Test that the valid placement checks are working."""
+        # First tile shall always be valid
+        row, col = self.board.tile_push(self.tile_a)
+        self.assertTrue(self.board.tile_valid(row, col))
+        # Place valid tile
+        row, col = self.board.tile_push(self.tile_b)
+        self.assertTrue(self.board.tile_valid(row, col))
+        # Place valid tile
+        row, col = self.board.tile_push(self.tile_c)
+        self.assertTrue(self.board.tile_valid(row, col))
+        # Place valid tile
+        row, col = self.board.tile_push(self.tile_d)
+        self.assertTrue(self.board.tile_valid(row, col))
+        # Place valid tile
+        row, col = self.board.tile_push(self.tile_e)
+        self.assertTrue(self.board.tile_valid(row, col))
+        # Place valid tile
+        row, col = self.board.tile_push(self.tile_f)
+        self.assertTrue(self.board.tile_valid(row, col))
+        # Remove valid tile
+        self.board.tile_pop()
+        # Place invalid tile
+        row, col = self.board.tile_push(self.tile_g)
+        self.assertFalse(self.board.tile_valid(row, col))
 
 
 if __name__ == '__main__':

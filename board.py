@@ -63,6 +63,7 @@ class Board:
         """Place tile on first vacant spot. Search by col, then row."""
         row, col = self._get_first_vacant_pos()
         self.tile_add(row, col, tile)
+        return (row, col)
 
     def tile_pop(self):
         """Remove tile from first filled spot. Search by col, then row."""
