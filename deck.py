@@ -34,7 +34,7 @@ class Tile:
 
     def rotate_cw(self):
         """Rotate card clockwise."""
-        if not self.in_use:
+        if not self._in_use:
             raise RuntimeError('Tile not in use shall not be rotated')
         self._edges = [self._edges[-1]] + self._edges[0:-1]
 
