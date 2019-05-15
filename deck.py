@@ -57,7 +57,7 @@ class Deck:
 
     def __init__(self, init_deck):
         """Create a deck of tiles."""
-        if len(init_deck) != tiles.CARDS_NUM:
+        if len(init_deck) != tiles.TILES_NUM:
             raise ValueError('The number of tile in deck is incorrect')
 
         self.tiles = []

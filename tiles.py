@@ -1,7 +1,7 @@
 """Description of the cards and the given deck."""
 from enum import Enum
 
-CARDS_NUM = 16
+TILES_NUM = 16
 EDGE_NUM = 4
 DIR_N = 0
 DIR_E = 1
