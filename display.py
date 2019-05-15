@@ -15,9 +15,6 @@ class Display:
         self.SIZE_PX = 100
         self.CTR_PX = self.SIZE_PX / 2
         self.tk_root = Tk()
-        self.canvas = Canvas(width=self.SIZE_PX * tiles.EDGE_NUM,
-                             height=self.SIZE_PX * tiles.EDGE_NUM, bg='white')
-        self.canvas.pack()
 
     def _circle(self, x, y, r):
         """Draw a circle located at x, y, with radius r."""
@@ -70,6 +67,9 @@ class Display:
 
     def deck(self, deck):
         """Draw the entire tile deck."""
+        self.canvas = Canvas(width=self.SIZE_PX * tiles.EDGE_NUM,
+                             height=self.SIZE_PX * tiles.EDGE_NUM, bg='white')
+        self.canvas.pack()
         for i, tile in enumerate(deck.tiles, start=0):
             row, col = divmod(i, tiles.EDGE_NUM)
             for edge_no, edge in enumerate(tile.get_edges(), start=0):
@@ -80,6 +80,9 @@ class Display:
 
     def board(self, board):
         """Draw the board."""
+        self.canvas = Canvas(width=self.SIZE_PX * tiles.EDGE_NUM,
+                             height=self.SIZE_PX * tiles.EDGE_NUM, bg='white')
+        self.canvas.pack()
         for row in range(tiles.EDGE_NUM):
             for col in range(tiles.EDGE_NUM):
                 if board[row][col] is None:
