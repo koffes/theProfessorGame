@@ -14,6 +14,7 @@ class Solver:
         self.disp = Display()
         self.board = Board()
         self.sol_attemp = 0
+        self.sol_found = 0
 
     def _tile_recursive(self, curr_pos):
         # get the next tile to use
@@ -34,18 +35,18 @@ class Solver:
                         print(self.sol_attemp)
                     if curr_pos >= 14:
                         self.highest_pos = curr_pos
-                        print('curr pos {0} '.format(curr_pos))
-                        print('curr card at pos {0} rot{1}'
-                              .format(self.tile_at_pos[curr_pos], rot))
-                        print('t {0}'.format(t))
+                        # print('curr pos {0} '.format(curr_pos))
+                        # print('curr card at pos {0} rot{1}'
+                        #      .format(self.tile_at_pos[curr_pos], rot))
+                        # print('t {0}'.format(t))
 
                     if self.board.tile_valid(row, col):
                         if curr_pos == 15:
-                            print('solution found!')
-
-                            self.disp.board(self.board.board)
-
-                        self._tile_recursive(curr_pos + 1)
+                            print('Solution found!')
+                            self.sol_found = self.sol_found + 1
+                            # self.disp.board(self.board.board)
+                        else:
+                            self._tile_recursive(curr_pos + 1)
                         curr_tile.rotate_cw()
                         rot = rot + 1
                     else:
@@ -55,8 +56,6 @@ class Solver:
                 self.board.tile_pop()
                 if self.tile_at_pos[curr_pos] >= 16:
                     self.tile_at_pos[curr_pos] = 0
-                    if curr_pos >= 14:
-                        print('returning')
                     return
 
         self.tile_at_pos[curr_pos] = 0
@@ -66,7 +65,7 @@ class Solver:
         """Invoke solver."""
         self.tile_at_pos = [0]*16
         self._tile_recursive(0)
-        print('program finished')
+        print('program finished. Soutions found: {}'.format(self.sol_found))
         # self.disp.board(self.board.board)
 
 
