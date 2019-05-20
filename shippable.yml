@@ -1,4 +1,9 @@
 language: python
 
 python:
-  - 3.4
+  - 3.7.3
+
+build:
+ ci:
+  - sudo pip install -r requirements.txt
+  - nose2 --junit-xml --with-coverage
