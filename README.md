@@ -1,3 +1,6 @@
+[![Run Status](https://api.shippable.com/projects/5ce2e8d01f6d1300073aa4d6/badge?branch=master)]()
+[![Coverage Badge](https://api.shippable.com/projects/5ce2e8d01f6d1300073aa4d6/coverageBadge?branch=master)]()
+
 # professorspillet
 Solver for Professorspillet.
 
