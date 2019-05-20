@@ -32,7 +32,8 @@ class Solver:
                 if curr_pos == (tiles.TILES_NUM - 1):
                     self.sol_found += 1
                     print('Solution! num: {0}'.format(self.sol_found))
-                    # self.disp.board(self.board.board)
+                    save_filename = 'solutions/sol_'+str(self.sol_found)+'.eps'
+                    self.disp.board(self.board.board, False, save_filename)
                 else:
                     self._tile_recursive(curr_pos + 1)
                 curr_tile.rotate_cw()

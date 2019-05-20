@@ -15,6 +15,9 @@ class Display:
         self.SIZE_PX = 100
         self.CTR_PX = self.SIZE_PX / 2
         self.tk_root = Tk()
+        self.canvas = Canvas(width=self.SIZE_PX * tiles.EDGE_NUM,
+                             height=self.SIZE_PX * tiles.EDGE_NUM, bg='white')
+        self.canvas.pack()
 
     def _circle(self, x, y, r):
         """Draw a circle located at x, y, with radius r."""
@@ -65,11 +68,12 @@ class Display:
                                      offs_x + self.SIZE_PX,
                                      offs_y + self.SIZE_PX, width=4)
 
+    def _save_to_file(self, filename):
+        self.canvas.update()
+        self.canvas.postscript(file=filename)
+
     def deck(self, deck):
         """Draw the entire tile deck."""
-        self.canvas = Canvas(width=self.SIZE_PX * tiles.EDGE_NUM,
-                             height=self.SIZE_PX * tiles.EDGE_NUM, bg='white')
-        self.canvas.pack()
         for i, tile in enumerate(deck.tiles, start=0):
             row, col = divmod(i, tiles.EDGE_NUM)
             for edge_no, edge in enumerate(tile.get_edges(), start=0):
@@ -78,11 +82,8 @@ class Display:
 
         self.tk_root.mainloop()
 
-    def board(self, board):
+    def board(self, board, show_sol, save_filename):
         """Draw the board."""
-        self.canvas = Canvas(width=self.SIZE_PX * tiles.EDGE_NUM,
-                             height=self.SIZE_PX * tiles.EDGE_NUM, bg='white')
-        self.canvas.pack()
         for row in range(tiles.EDGE_NUM):
             for col in range(tiles.EDGE_NUM):
                 if board[row][col] is None:
@@ -94,4 +95,9 @@ class Display:
                                                    start=0):
                         self._triangle(edge_no * 90, col * 100, row * 100,
                                        edge.color, edge.bdyprt)
-        self.tk_root.mainloop()
+
+        if save_filename is not None:
+            self._save_to_file(save_filename)
+        if show_sol:
+            self.tk_root.mainloop()
+        self.canvas.delete('all')
