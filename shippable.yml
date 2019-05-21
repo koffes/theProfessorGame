@@ -6,4 +6,4 @@ python:
 build:
  ci:
   - sudo pip install -r requirements.txt
-  - nose2 --junit-xml --with-coverage
+  - nose2 --with-coverage
