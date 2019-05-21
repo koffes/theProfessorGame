@@ -6,4 +6,5 @@ python:
 build:
  ci:
   - sudo pip install -r requirements.txt
-  - nose2 --with-coverage
+  - nose2 --plugin nose2.plugins.junitxml --junit-xml --with-coverage
+  - mv nose2-junit.xml shippable/testresults/tests.xml
