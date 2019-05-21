@@ -9,3 +9,4 @@ build:
   - nose2 --plugin nose2.plugins.junitxml --junit-xml --with-coverage
   - mv nose2-junit.xml shippable/testresults/tests.xml
   - coverage xml -o shippable/codecoverage/coverage.xml
+  - pre-commit run --all-files
