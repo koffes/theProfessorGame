@@ -1,9 +1,11 @@
 """Display functions for the game deck and board."""
 from tkinter import Tk
 from tkinter import Canvas
+from pathlib import Path
 import tiles
 import math
 import cmath
+import os
 
 
 class Display:
@@ -97,6 +99,10 @@ class Display:
                                        edge.color, edge.bdyprt)
 
         if save_filename is not None:
+            p = Path(save_filename)
+            directory = ''.join(map(str, p.parts[:-1]))
+            if not os.path.exists(directory):
+                os.makedirs(directory)
             self._save_to_file(save_filename)
         if show_sol:
             self.tk_root.mainloop()

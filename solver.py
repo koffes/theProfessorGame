@@ -3,6 +3,8 @@ from deck import Deck
 import tiles
 from display import Display
 from board import Board
+import epscombine
+import argparse
 
 
 class Solver:
@@ -64,16 +66,32 @@ class Solver:
         self.tile_at_pos[curr_pos] = 0
         return
 
-    def solve(self):
+    def solve(self, dest):
         """Invoke solver."""
         self.tile_at_pos = [0]*tiles.TILES_NUM
         self._tile_recursive(0)
-        print('program finished. Solutions found: {}'.format(self.sol_found))
+        print('Solutions found: {}'.format(self.sol_found))
         return self.sol_found
 
 
-print('Running the professor game solver.')
+def main():
+    """Run solver based on cmd line args."""
+    parser = argparse.ArgumentParser(description='Professor game solver')
+    parser.add_argument('-c', '--combine', help='combine all images',
+                        default=False, action='store_true')
+    parser.add_argument('-d', '--destination',
+                        help='solution destination folder',
+                        default='solutions/')
+    args = parser.parse_args()
+
+    s = Solver()
+    solutions = s.solve(args.destination)
+    if (args.combine):
+        num_files = epscombine.combine('solutions/', 'combined_solutions')
+        if (solutions is not num_files):
+            raise ValueError("""Tot soultions: {0} num eps files: {1}.
+                             Should be equal""".format(solutions, num_files))
 
 
-s = Solver()
-s.solve()
+if __name__ == '__main__':
+    main()
