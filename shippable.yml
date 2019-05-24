@@ -8,5 +8,5 @@ build:
   - sudo pip install -r requirements.txt
   - nose2 --plugin nose2.plugins.junitxml --junit-xml --with-coverage
   - mv nose2-junit.xml shippable/testresults/tests.xml
-  - coverage xml -o shippable/codecoverage/coverage.xml
+  - coverage xml -o shippable/codecoverage/coverage.xml --omit display.py
   - pre-commit run --all-files
