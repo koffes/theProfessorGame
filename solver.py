@@ -3,7 +3,6 @@ from deck import Deck
 import tiles
 from display import Display
 from board import Board
-import epscombine
 import argparse
 
 
@@ -77,20 +76,13 @@ class Solver:
 def main():
     """Run solver based on cmd line args."""
     parser = argparse.ArgumentParser(description='Professor game solver')
-    parser.add_argument('-c', '--combine', help='combine all images',
-                        default=False, action='store_true')
     parser.add_argument('-d', '--destination',
                         help='solution destination folder',
                         default='solutions/')
     args = parser.parse_args()
 
     s = Solver()
-    solutions = s.solve(args.destination)
-    if (args.combine):
-        num_files = epscombine.combine('solutions/', 'combined_solutions')
-        if (solutions is not num_files):
-            raise ValueError("""Tot soultions: {0} num eps files: {1}.
-                             Should be equal""".format(solutions, num_files))
+    s.solve(args.destination)
 
 
 if __name__ == '__main__':
