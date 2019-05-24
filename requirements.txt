@@ -1,4 +1,3 @@
 argparse>=1.4.0
 nose2>=0.9.1
 pre-commit>=1.15.2
-pyx>=0.14.1
